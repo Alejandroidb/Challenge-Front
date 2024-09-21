@@ -1,0 +1,15 @@
+.products-container {
+  display: flex;
+}
+
+.sidebar {
+  flex: 0 0 20%; /* Fija el Sidebar al 20% */
+  height: 100vh; /* Altura completa de la ventana */
+  background-color: #f8f9fa;
+}
+
+.products-content {
+  flex: 0 0 80%; /* Fija el contenido de productos al 80% */
+  padding: 20px; /* Espaciado interno */
+  overflow-y: auto; /* Agrega scroll si es necesario */
+}
