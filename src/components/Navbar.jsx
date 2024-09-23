@@ -20,7 +20,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse justify-content-center">
+        <div className="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
           <form className="d-flex" role="search">
             <div className="input-group">
               <input
@@ -38,41 +38,39 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
               </button>
             </div>
           </form>
+          <ul className="navbar-nav ms-auto"> {/* Ajusta aquí para alinear el menú a la derecha */}
+            {isAuthenticated ? (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/productos">
+                    Productos
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/carrito">
+                    Carrito
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <Logout setIsAuthenticated={setIsAuthenticated} />
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/registrarse">
+                    Registrate
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/login">
+                    Iniciar sesión
+                  </NavLink>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
-        <ul className="navbar-nav">
-          {isAuthenticated && (
-            <>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/productos">
-                  Productos
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/carrito">
-                  Carrito
-                </NavLink>
-              </li>
-            </>
-          )}
-          {!isAuthenticated ? (
-            <>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/registrarse">
-                  Registrate
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/login">
-                  Iniciar sesión
-                </NavLink>
-              </li>
-            </>
-          ) : (
-            <li className="nav-item">
-              <Logout setIsAuthenticated={setIsAuthenticated} />
-            </li>
-          )}
-        </ul>
       </div>
     </nav>
   );

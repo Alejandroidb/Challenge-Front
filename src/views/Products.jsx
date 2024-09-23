@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../assets/css/Products.css";
-import useCartStore from "../context/CartContext"; // Asegúrate de ajustar la ruta al archivo correcto
+import useCartStore from "../context/CartContext";
 
 const Products = () => {
-  const { addToCart } = useCartStore(); // Obtener la función addToCart del contexto del carrito
+  const { addToCart, cart } = useCartStore();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,7 +59,7 @@ const Products = () => {
     if (existingProduct) {
       addToCart({ ...existingProduct, quantity: existingProduct.quantity + 1 });
     } else {
-      addToCart({ ...product, quantity: 1 }); // Agregar producto con cantidad inicial 1
+      addToCart({ ...product, quantity: 1 });
     }
   };
 
@@ -73,57 +73,61 @@ const Products = () => {
 
   return (
     <div className="products-container">
-      <Sidebar onSelectCategory={setSelectedCategory} />
-      <div className="products-content">
-        <h1>Productos</h1>
-        <div className="row">
-          {products.map((product) => (
-            <div className="col-md-3 mb-4" key={product.id}>
-              <div className="card">
-                <img
-                  className="card-img-top img-fluid custom"
-                  src={product.foto_de_producto}
-                  alt={product.nombre}
-                />
-                <div className="card-body">
-                  <hr />
-                  <p className="card-text">
-                    <small>{product.categoria}</small>
-                  </p>
-                  <h5 className="card-title">{product.nombre}</h5>
-                  <p className="card-text">${product.precio}</p>
-                  <hr />
-                </div>
-                <div className="d-flex justify-content-center mb-2">
-                  <button
-                    className="btn btn-outline-primary"
-                    onClick={() => handleAddToCart(product)} // Llamar a handleAddToCart al hacer clic
-                  >
-                    Agregar al carro
-                  </button>
+      <div className="row">
+        <div className="col-md-3 order-md-1"> {/* Sidebar en la columna izquierda */}
+          <Sidebar onSelectCategory={setSelectedCategory} />
+        </div>
+        <div className="col-md-9 order-md-2"> {/* Productos en la columna derecha */}
+          <h1>Productos</h1>
+          <div className="row">
+            {products.map((product) => (
+              <div className="col-6 col-sm-4 col-md-3 mb-4" key={product.id}>
+                <div className="card">
+                  <img
+                    className="card-img-top img-fluid"
+                    src={product.foto_de_producto}
+                    alt={product.nombre}
+                  />
+                  <div className="card-body">
+                    <hr />
+                    <p className="card-text">
+                      <small>{product.categoria}</small>
+                    </p>
+                    <h5 className="card-title">{product.nombre}</h5>
+                    <p className="card-text">${product.precio}</p>
+                    <hr />
+                  </div>
+                  <div className="d-flex justify-content-center mb-2">
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="pagination d-flex justify-content-between">
-          <button
-            className="btn btn-secondary"
-            onClick={() => manejoPaginas(page - 1)}
-            disabled={page === 1}
-          >
-            Anterior
-          </button>
-          <span>
-            Página {page} de {totalPages}
-          </span>
-          <button
-            className="btn btn-secondary"
-            onClick={() => manejoPaginas(page + 1)}
-            disabled={page === totalPages}
-          >
-            Siguiente
-          </button>
+            ))}
+          </div>
+          <div className="pagination d-flex justify-content-between">
+            <button
+              className="btn btn-secondary"
+              onClick={() => manejoPaginas(page - 1)}
+              disabled={page === 1}
+            >
+              Anterior
+            </button>
+            <span>
+              Página {page} de {totalPages}
+            </span>
+            <button
+              className="btn btn-secondary"
+              onClick={() => manejoPaginas(page + 1)}
+              disabled={page === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
     </div>

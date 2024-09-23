@@ -1,5 +1,6 @@
 .products-container {
   display: flex;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -12,4 +13,6 @@
   flex: 0 0 80%; /* Fija el contenido de productos al 80% */
   padding: 20px; /* Espaciado interno */
   overflow-y: auto; /* Agrega scroll si es necesario */
+  max-width: 100%;
 }
+
