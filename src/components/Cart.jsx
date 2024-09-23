@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import useCartStore from "../context/CartContext";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 const Cart = () => {
   const { cart, removeFromCart, addToCart, loadCartFromStorage } =
     useCartStore();
+  const navigate = useNavigate(); // Inicializa el hook useNavigate
 
   useEffect(() => {
     loadCartFromStorage(); // Cargar el carrito desde localStorage al inicio
@@ -26,23 +28,70 @@ const Cart = () => {
     }
   };
 
+  // Calcular el precio total
+  const getTotalPrice = () => {
+    return cart
+      .reduce((total, item) => total + item.precio * item.quantity, 0)
+      .toFixed(2);
+  };
+
   return (
     <div>
       <h2>Tu Carrito</h2>
       {cart.length === 0 ? (
         <p>Tu carrito está vacío.</p>
       ) : (
-        <div>
+        <div className="row">
           {cart.map((item) => (
-            <div key={item.id}>
-              <h3>{item.name}</h3>
-              <p>Precio: ${item.price}</p>
-              <p>Cantidad: {item.quantity}</p>
-              <button onClick={() => increaseQuantity(item)}>+</button>
-              <button onClick={() => decreaseQuantity(item.id)}>-</button>
-              <button onClick={() => removeFromCart(item.id)}>Eliminar</button>
+            <div key={item.id} className="col-md-4 mb-4">
+              <div className="card">
+                <div className="row g-0">
+                  <div className="col-md-4">
+                    <img
+                      src={item.foto_de_producto}
+                      alt={item.nombre}
+                      className="img-fluid rounded-start"
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <div className="card-body">
+                      <h3 className="card-title">{item.nombre}</h3>
+                      <p className="card-text">Precio: ${item.precio}</p>
+                      <p className="card-text">Cantidad: {item.quantity}</p>
+                      <div className="button-group">
+                        <button
+                          className="btn btn-outline-primary me-2"
+                          onClick={() => increaseQuantity(item)}
+                        >
+                          +
+                        </button>
+                        <button
+                          className="btn btn-outline-primary me-2"
+                          onClick={() => decreaseQuantity(item.id)}
+                        >
+                          -
+                        </button>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => removeFromCart(item.id)}
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
+          <div className="col-md-12 mt-4">
+            <h4>Precio Total: ${getTotalPrice()}</h4>
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate("/productos")}
+            >Volver a productos            
+            </button>
+          </div>
         </div>
       )}
     </div>
