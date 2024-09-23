@@ -1,37 +1,36 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import '../assets/css/Products.css';
+import "../assets/css/Products.css";
+import useCartStore from "../context/CartContext"; // Asegúrate de ajustar la ruta al archivo correcto
 
 const Products = () => {
+  const { addToCart } = useCartStore(); // Obtener la función addToCart del contexto del carrito
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const getProductos = async () => {
-   const token = localStorage.getItem("token")
-   if (!token) {
-    setError("No autorizado para acceder a esta página");
-    setLoading(false);
-    return;
-   }
-   console.log("Token:", token);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("No autorizado para acceder a esta página");
+      setLoading(false);
+      return;
+    }
     try {
-
       let url = `http://localhost:3000/productos?page=${page}&limit=20`;
       if (selectedCategory) {
-        url = `http://localhost:3000/productos/categoria/${categoria}?page=${page}&limit=20`
+        url = `http://localhost:3000/productos/categoria/${selectedCategory}?page=${page}&limit=20`;
       }
 
       const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        }
-      );
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Error al obtener los productos");
       }
@@ -55,6 +54,15 @@ const Products = () => {
     }
   };
 
+  const handleAddToCart = (product) => {
+    const existingProduct = cart.find((item) => item.id === product.id);
+    if (existingProduct) {
+      addToCart({ ...existingProduct, quantity: existingProduct.quantity + 1 });
+    } else {
+      addToCart({ ...product, quantity: 1 }); // Agregar producto con cantidad inicial 1
+    }
+  };
+
   if (loading) {
     return <div>Cargando productos...</div>;
   }
@@ -65,7 +73,7 @@ const Products = () => {
 
   return (
     <div className="products-container">
-      <Sidebar onSelectCategory={setSelectedCategory}/>
+      <Sidebar onSelectCategory={setSelectedCategory} />
       <div className="products-content">
         <h1>Productos</h1>
         <div className="row">
@@ -87,7 +95,10 @@ const Products = () => {
                   <hr />
                 </div>
                 <div className="d-flex justify-content-center mb-2">
-                  <button className="btn btn-outline-primary">
+                  <button
+                    className="btn btn-outline-primary"
+                    onClick={() => handleAddToCart(product)} // Llamar a handleAddToCart al hacer clic
+                  >
                     Agregar al carro
                   </button>
                 </div>
@@ -96,11 +107,21 @@ const Products = () => {
           ))}
         </div>
         <div className="pagination d-flex justify-content-between">
-          <button className="btn btn-secondary" onClick={() => manejoPaginas(page - 1)} disabled={page === 1}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => manejoPaginas(page - 1)}
+            disabled={page === 1}
+          >
             Anterior
           </button>
-          <span>Página {page} de {totalPages}</span>
-          <button className="btn btn-secondary" onClick={() => manejoPaginas(page + 1)} disabled={page === totalPages}>
+          <span>
+            Página {page} de {totalPages}
+          </span>
+          <button
+            className="btn btn-secondary"
+            onClick={() => manejoPaginas(page + 1)}
+            disabled={page === totalPages}
+          >
             Siguiente
           </button>
         </div>

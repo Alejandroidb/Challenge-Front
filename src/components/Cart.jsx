@@ -9,7 +9,9 @@ const Cart = () => {
   }, []);
 
   const increaseQuantity = (product) => {
-    addToCart(product);  // Añadir más cantidad del producto
+    const updatedProduct = { ...product, quantity: product.quantity + 1 };
+    removeFromCart(product.id);  // Remover el producto actual
+    addToCart(updatedProduct);   // Agregar el producto con la cantidad incrementada
   };
 
   const decreaseQuantity = (productId) => {
@@ -17,7 +19,9 @@ const Cart = () => {
     if (product.quantity > 1) {
       const updatedProduct = { ...product, quantity: product.quantity - 1 };
       removeFromCart(productId);  // Remover el producto actual
-      addToCart(updatedProduct);  // Agregar el producto actualizado
+      addToCart(updatedProduct);  // Agregar el producto con la cantidad decrementada
+    } else {
+      removeFromCart(productId);  // Si la cantidad es 1, simplemente lo removemos
     }
   };
 

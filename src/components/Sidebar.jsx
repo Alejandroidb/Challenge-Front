@@ -25,14 +25,14 @@ const Sidebar = ({ onSelectCategory }) => {
     <div className="sidebar">
       <h4>Categorías</h4>
       <ul className="list-group">
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <li
-            key={category.id}
+            key={index}
             className="list-group-item"
-            onClick={() => onSelectCategory(category.nombre)}
+            onClick={() => onSelectCategory(category.categoria)}
             style={{ cursor: 'pointer' }}
           >
-            {category.nombre}
+            {category.categoria}
           </li>
         ))}
       </ul>

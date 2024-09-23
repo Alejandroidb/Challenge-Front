@@ -40,6 +40,20 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
           </form>
         </div>
         <ul className="navbar-nav">
+          {isAuthenticated && (
+            <>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/productos">
+                  Productos
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/carrito">
+                  Carrito
+                </NavLink>
+              </li>
+            </>
+          )}
           {!isAuthenticated ? (
             <>
               <li className="nav-item">
