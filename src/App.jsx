@@ -22,7 +22,7 @@ function App() {
         setIsAuthenticated={setIsAuthenticated}
       />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home isAuthenticated={isAuthenticated}/>} />
         <Route path="/registrarse" element={<Register />} />
         <Route
           path="/login"
