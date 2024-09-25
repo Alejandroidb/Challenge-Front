@@ -9,6 +9,7 @@ import Register from "./views/Register";
 import Login from "./views/Login";
 import { useState } from "react";
 import CartPage from "./pages/CartPage";
+import Checkout from "./components/Checkout";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -30,7 +31,8 @@ function App() {
         />
         <Route path="/productos" element={<Products />} />
         <Route path="/carrito" element={<CartPage />} />
-      </Routes>
+        <Route path="/checkout" element={<Checkout/>}/>
+      </Routes> 
     </>
   );
 }
