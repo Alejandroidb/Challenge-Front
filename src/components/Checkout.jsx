@@ -1,12 +1,11 @@
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import React, { useState, useEffect } from 'react';
-
-const stripePromise = loadStripe('tu_clave_publica_de_stripe');
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
@@ -14,16 +13,14 @@ const Checkout = () => {
     fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: 5000 }), // Ejemplo de monto ($50.00)
+      body: JSON.stringify({ amount: 5000 }), // Monto de ejemplo ($50.00)
     })
       .then(res => res.json())
       .then(data => setClientSecret(data.clientSecret));
   }, []);
 
   const handlePayment = async () => {
-    if (!stripe || !elements) {
-      return;
-    }
+    if (!stripe || !elements) return;
 
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
@@ -35,15 +32,23 @@ const Checkout = () => {
       console.error(error);
     } else if (paymentIntent.status === 'succeeded') {
       console.log('Pago completado:', paymentIntent);
+
       // Redirigir a la confirmación del pedido
+      const orderDetails = {
+        orderId: paymentIntent.id,
+        total: 5000,
+        date: new Date().toLocaleString(),
+        items: [{ id: 1, name: "Producto Ejemplo", price: 50, quantity: 1 }],
+      };
+      navigate('/order-confirmation', { state: { orderDetails } });
     }
   };
 
   return (
-    <div>
+    <div className="checkout-container">
       <h2>Checkout</h2>
       <CardElement />
-      <button onClick={handlePayment}>Pagar</button>
+      <button onClick={handlePayment} className="btn btn-success mt-3">Pagar</button>
     </div>
   );
 };
