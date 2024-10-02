@@ -84,12 +84,20 @@ const Cart = () => {
               </div>
             </div>
           ))}
-          <div className="col-md-12 mt-4">
-            <h4>Precio Total: ${getTotalPrice()}</h4>
+
+          <div className="col-md-12 mt-4 d-flex justify-content-between">
             <button
               className="btn btn-primary"
               onClick={() => navigate("/productos")}
-            >Volver a productos            
+            >
+              Volver a productos
+            </button>
+            <h4>Precio Total: ${getTotalPrice()}</h4>
+            <button
+              className="btn btn-success"
+              onClick={() => navigate("/checkout")}
+            >
+              Proceder al pago
             </button>
           </div>
         </div>
