@@ -1,12 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Logout from "./Logout";
+import "../assets/css/Products.css"
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">
+        <img src="src\assets\img\logo-ecommerce.png" alt="Logo-TodoCOmpras" className="logo" />
           TodoCompras
         </NavLink>
         <button

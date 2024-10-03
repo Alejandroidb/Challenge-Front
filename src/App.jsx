@@ -10,6 +10,8 @@ import Checkout from "./components/Checkout";
 import OrderConfirmation from "./views/OrderConfirmation";
 import "../src/App.css"
 
+
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")

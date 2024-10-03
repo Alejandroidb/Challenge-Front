@@ -1,34 +1,30 @@
 import React, { useEffect } from "react";
 import useCartStore from "../context/CartContext";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
-
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const { cart, removeFromCart, addToCart, loadCartFromStorage } =
     useCartStore();
-  const navigate = useNavigate(); // Inicializa el hook useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
-    loadCartFromStorage(); // Cargar el carrito desde localStorage al inicio
+    loadCartFromStorage();
   }, []);
 
   const increaseQuantity = (product) => {
-    const updatedProduct = { ...product, quantity: product.quantity + 1 };
-    removeFromCart(product.id); // Remover el producto actual
-    addToCart(updatedProduct); // Agregar el producto con la cantidad incrementada
+    const updatedProduct = { ...product, quantity: 1 };
+    addToCart(updatedProduct);
   };
 
   const decreaseQuantity = (productId) => {
     const product = cart.find((item) => item.id === productId);
     if (product.quantity > 1) {
-      const updatedProduct = { ...product, quantity: product.quantity - 1 };
-      removeFromCart(productId); // Remover el producto actual
-      addToCart(updatedProduct); // Agregar el producto con la cantidad decrementada
+      const updatedProduct = { ...product, quantity: - 1 };
+      addToCart(updatedProduct);
     } else {
-      removeFromCart(productId); // Si la cantidad es 1, simplemente lo removemos
+      removeFromCart(productId);
     }
   };
 
-  // Calcular el precio total
   const getTotalPrice = () => {
     return cart
       .reduce((total, item) => total + item.precio * item.quantity, 0)
@@ -37,7 +33,7 @@ const Cart = () => {
 
   return (
     <div>
-      <h2>Tu Carrito</h2>
+      <h2>Tu Carrito:</h2>
       {cart.length === 0 ? (
         <p>Tu carrito está vacío.</p>
       ) : (

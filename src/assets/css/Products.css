@@ -15,4 +15,7 @@
   overflow-y: auto; /* Agrega scroll si es necesario */
   max-width: 100%;
 }
-
+.logo {
+  height: 50px;
+  width: 50px;
+}
