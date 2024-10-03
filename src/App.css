@@ -6,6 +6,8 @@
   height: 20px;
   width: 20px;
 }
-.logo {
-  size: 20px;
+body {
+  background-image: url("../src/assets/img/logo-ecommerce-1.png");
+  background-size: auto;
+  background-position: center;
 }
